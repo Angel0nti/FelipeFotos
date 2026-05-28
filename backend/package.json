@@ -11,13 +11,6 @@
   "keywords": [],
   "author": "Angel",
   "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.2.2",
-      "onFail": "download"
-    }
-  },
   "type": "module",
   "dependencies": {
     "cloudinary": "^2.10.0",
