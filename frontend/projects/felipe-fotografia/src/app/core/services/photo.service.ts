@@ -38,15 +38,20 @@ export class PhotoService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`,
     });
-    return this.http.post<Photo>(`http://localhost:3000/api/admin/photos`, formData, { headers });
+    return this.http.post<Photo>(
+      `https://felipe-fotos-eloljb18a-angel-portfolio-project.vercel.app/api/admin/photos`,
+      formData,
+      { headers },
+    );
   }
 
   deletePhoto(id: string): Observable<{ message: string }> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`,
     });
-    return this.http.delete<{ message: string }>(`http://localhost:3000/api/admin/photos/${id}`, {
-      headers,
-    });
+    return this.http.delete<{ message: string }>(
+      `https://felipe-fotos-eloljb18a-angel-portfolio-project.vercel.app/api/admin/photos/${id}`,
+      { headers },
+    );
   }
 }
