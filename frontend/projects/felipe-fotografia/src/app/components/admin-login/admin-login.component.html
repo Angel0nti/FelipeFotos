@@ -1,0 +1,17 @@
+<!-- admin-login.component.html — Password form -->
+<div class="login-container">
+  <h2>Admin Access</h2>
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+  <input
+    type="password"
+    placeholder="Password"
+    [value]="password()"
+    (input)="password.set($any($event.target).value)"
+  />
+
+  <button (click)="onSubmit()" [disabled]="loading()">
+    {{ loading() ? 'Logging in..' : 'Login' }}
+  </button>
+</div>

@@ -1,0 +1,35 @@
+<!-- footer.component.html — Site footer with social links and credits -->
+<footer class="footer">
+  <!-- Logo -->
+  <div class="footer__logo">
+    <picture>
+      <source srcset="images/logo/logo-bg-off-150.avif" type="image/avif" />
+      <source srcset="images/logo/logo-bg-off-150.webp" type="image/webp" />
+      <img src="images/logo/logo-bg-off-150.avif" alt="Felipe Ontiveros Fotografía" />
+    </picture>
+  </div>
+
+  <!-- Social links -->
+  <ul class="footer__social">
+    <li>
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://wa.me/529999999999" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-whatsapp"></i>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Credits -->
+  <p class="footer__credits">
+    &copy; {{ currentYear }} Felipe Ontiveros Fotografía. Todos los derechos reservados.
+  </p>
+</footer>

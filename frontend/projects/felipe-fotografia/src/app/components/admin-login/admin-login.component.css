@@ -1,0 +1,70 @@
+/* admin-login.component.css — Login form styles */
+
+.login-container {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+}
+
+.login-container h2 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-heading);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.login-container input {
+  width: 100%;
+  max-width: 40rem;
+  padding: 1.4rem 2rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  outline: none;
+  transition: border-color var(--transition-fast);
+  margin-bottom: var(--spacing-sm);
+}
+
+.login-container input:focus {
+  border-color: var(--color-accent);
+}
+
+.login-container button {
+  width: 100%;
+  max-width: 40rem;
+  padding: 1.4rem;
+  background-color: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.login-container button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.login-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e05c5c;
+  font-size: var(--font-size-small);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}

@@ -1,0 +1,68 @@
+<!-- admin-upload.component.html — Upload form and photo list -->
+<div class="upload-container">
+  <h2>Photo Management</h2>
+  <button (click)="authService.logout()">Logout</button>
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+  @if (success()) {
+    <p class="sucess">{{ success() }}</p>
+  }
+
+  <!-- Instructions for the admin -->
+  <div class="upload-instructions">
+    <p>
+      <span>Categoría</span> — Selecciona el álbum donde aparecerá la foto: bodas, exteriores,
+      graduaciones, estudio o eventos.
+    </p>
+    <p>
+      <span>Título</span> — Nombre opcional de la foto. Aparece como overlay al pasar el cursor
+      sobre ella.
+    </p>
+    <p>
+      <span>Orden</span> — Número que define la posición de la foto dentro de su categoría. 1
+      aparece primero, números mayores van después.
+    </p>
+  </div>
+  <div class="form">
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+
+    <select [value]="category()" (change)="category.set($any($event.target).value)">
+      @for (cat of categories; track cat) {
+        <option [value]="cat">{{ cat }}</option>
+      }
+    </select>
+
+    <input
+      type="text"
+      placeholder="Photo Title (Optional)"
+      [value]="photoTitle()"
+      ,
+      (input)="photoTitle.set($any($event.target).value)"
+    />
+    <input
+      type="text"
+      placeholder="Order"
+      [value]="order()"
+      (input)="order.set(+$any($event.target).value)"
+    />
+
+    <button (click)="onUpload()" [disabled]="loading()">
+      {{ loading() ? 'Uploading...' : 'Upload Photo' }}
+    </button>
+  </div>
+
+  <div class="photo-list">
+    @for (photo of photos(); track photo._id) {
+      <div class="photo-item">
+        <img [src]="photo.url" [alt]="photo.photoTitle || 'Photo'" />
+        <div class="photo-item__info">
+          <span class="photo-item__category">{{ photo.category }}</span>
+          <span class="photo-item__title">{{ photo.photoTitle || 'Sin título' }}</span>
+          <span class="photo-item__order">Orden de aparicion: {{ photo.order }}</span>
+        </div>
+        <button (click)="onDelete(photo._id)">Delete</button>
+      </div>
+    }
+  </div>
+</div>

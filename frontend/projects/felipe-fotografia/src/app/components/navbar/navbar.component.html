@@ -1,0 +1,43 @@
+<!-- navbar.component.html — Main navigation with hamburger for mobile -->
+<nav class="nav" [class.sticky]="isSticky()">
+  <!-- Logo with modern format fallback -->
+  <div class="nav__logo">
+    <picture>
+      <source srcset="images/logo/logo-bg-off-150.avif" type="image/avif" />
+      <source srcset="images/logo/logo-bg-off-150.webp" type="image/webp" />
+      <img src="images/logo/logo-bg-off-150.avif" alt="Felipe Mora Fotografía" />
+    </picture>
+  </div>
+
+  <!-- Desktop links -->
+  <ul class="nav__ul">
+    <li><a class="nav__a" href="#weddings">Bodas</a></li>
+    <li><a class="nav__a" href="#outdoors">Exteriores</a></li>
+    <li><a class="nav__a" href="#graduations">Graduaciones</a></li>
+    <li><a class="nav__a" href="#studio">Estudio</a></li>
+    <li><a class="nav__a" href="#events">Eventos</a></li>
+  </ul>
+
+  <!-- Hamburger button for mobile -->
+  <button
+    class="ham-menu"
+    [class.active]="isMenuOpen()"
+    (click)="toggleMenu()"
+    aria-label="Toggle menu"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile dropdown -->
+<div class="dropdown-menu" [class.active]="isMenuOpen()">
+  <ul>
+    <li><a href="#weddings" (click)="toggleMenu()">Weddings</a></li>
+    <li><a href="#outdoors" (click)="toggleMenu()">Outdoors</a></li>
+    <li><a href="#graduations" (click)="toggleMenu()">Graduations</a></li>
+    <li><a href="#studio" (click)="toggleMenu()">Studio</a></li>
+    <li><a href="#events" (click)="toggleMenu()">Events</a></li>
+  </ul>
+</div>

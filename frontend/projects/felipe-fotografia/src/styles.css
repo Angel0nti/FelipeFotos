@@ -1,0 +1,75 @@
+/* You can add global styles to this file, and also import other style files */
+/* Google Fonts — Playfair Display for headings, Inter for body */
+/* CSS Variables — global design tokens */
+:root {
+  /* Colors */
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-border: #222222;
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #888888;
+  --color-accent: #c9a96e; /* gold — elegance touch */
+
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --font-size-hero: clamp(3.5rem, 8vw, 8rem);
+  --font-size-heading: clamp(2rem, 4vw, 3.5rem);
+  --font-size-subheading: clamp(1.4rem, 2vw, 1.8rem);
+  --font-size-body: clamp(1.3rem, 1.5vw, 1.6rem);
+  --font-size-small: 1.1rem;
+
+  /* Spacing */
+  --spacing-xs: 0.8rem;
+  --spacing-sm: 1.6rem;
+  --spacing-md: 3.2rem;
+  --spacing-lg: 6.4rem;
+  --spacing-xl: 12rem;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-slow: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Global reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 55%;
+  }
+}
+@media (max-width: 600px) {
+  html {
+    font-size: 48%;
+  }
+}
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Section reveal animation */
+.section--hidden {
+  opacity: 0;
+  transform: translateY(4rem);
+  transition:
+    opacity 0.8s ease-out,
+    transform var(--transition-slow);
+}

@@ -1,0 +1,146 @@
+/* gallery.component.css — Masonry and grid layouts for photo sections */
+
+.gallery-section {
+  padding: var(--spacing-xl) var(--spacing-md);
+  max-width: 140rem;
+  margin: 0 auto;
+}
+
+/* Section header */
+.gallery-section__header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.gallery-section__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-heading);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* Decorative line next to title */
+.gallery-section__line {
+  height: 1px;
+  background: linear-gradient(to right, var(--color-accent), transparent);
+}
+
+/* Loading state */
+.gallery-section__loading {
+  display: grid;
+  place-items: center;
+  height: 20rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.gallery-section__error {
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: var(--spacing-md);
+}
+
+/* ── MASONRY LAYOUT ── */
+.masonry {
+  column-count: 3;
+  column-gap: 1.2rem;
+}
+
+.masonry .gallery-section__figure {
+  /* Prevents a figure from being split across columns */
+  break-inside: avoid;
+  margin-bottom: 1.2rem;
+}
+
+.masonry .gallery-section__figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* ── GRID LAYOUT ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.grid .gallery-section__figure {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+.grid .gallery-section__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* Shared figure styles */
+.gallery-section__figure {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Zoom on hover */
+.gallery-section__figure:hover img {
+  transform: scale(1.04);
+}
+
+/* Caption overlay on hover */
+figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-family: var(--font-body);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.gallery-section__figure:hover figcaption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .masonry {
+    column-count: 2;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .masonry {
+    column-count: 1;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-section {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+}

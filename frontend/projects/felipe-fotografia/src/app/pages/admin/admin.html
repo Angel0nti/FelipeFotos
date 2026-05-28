@@ -1,0 +1,7 @@
+<!-- admin.component.html - shows login or upload panel based on auth state -->
+
+@if (authService.isLoggedIn()) {
+  <app-admin-upload></app-admin-upload>
+} @else {
+  <app-admin-login></app-admin-login>
+}

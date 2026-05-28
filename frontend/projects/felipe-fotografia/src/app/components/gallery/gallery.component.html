@@ -1,0 +1,43 @@
+<!-- gallery.component.html — Renders masonry or grid layout based on layout input -->
+<section class="gallery-section" [id]="category">
+  <!-- Section header -->
+  <div class="gallery-section__header">
+    <h2 class="gallery-section__title">{{ title }}</h2>
+    <div class="gallery-section__line"></div>
+  </div>
+
+  <!-- loading state -->
+  @if (loading()) {
+    <div class="gallery-section__loading">
+      <span>Loading...</span>
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (error()) {
+    <p class="gallery-section__error">{{ error() }}</p>
+  }
+
+  <!-- Photo grid - class changes based on layout input -->
+  @if (!loading() && !error()) {
+    <div
+      class="gallery-section__photos"
+      [class.masonry]="layout === 'masonry'"
+      [class.grid]="layout === 'grid'"
+    >
+      @for (photo of photos(); track photo._id) {
+        <figure class="gallery-section__figure">
+          <img
+            [src]="getOptimizedUrl(photo.url)"
+            [alt]="photo.photoTitle || category"
+            loading="lazy"
+          />
+          <!-- Optional title overlay on hover -->
+          @if (photo.photoTitle) {
+            <figcaption>{{ photo.photoTitle }}</figcaption>
+          }
+        </figure>
+      }
+    </div>
+  }
+</section>
