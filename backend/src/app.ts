@@ -27,10 +27,9 @@ app.get('/api/health', (_, res) => {
   res.json({ status: 'ok' });
 });
 
-// Connect to MongoDB then start the server
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-});
+// Connect to MongoDB
+connectDB();
+
+// Vercel uses the exported app, not app.listen()
+
 export default app;
