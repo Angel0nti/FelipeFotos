@@ -12,7 +12,9 @@ const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
 // Allow requests from the frontend origin
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+// app.use(cors({ origin: process.env.FRONTEND_URL }));
+// Temporarily allow all origins for debugging
+app.use(cors());
 
 // Parse incoming JSON requests
 app.use(express.json());
