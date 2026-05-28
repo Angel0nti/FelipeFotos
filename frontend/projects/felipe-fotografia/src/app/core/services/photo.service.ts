@@ -22,7 +22,7 @@ export interface Photo {
 export class PhotoService {
   // Modern Angular way to inject dependencies
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/photos';
+  private apiUrl = 'https://felipe-fotos-eloljb18a-angel-portfolio-project.vercel.app/api/photos';
   private authService = inject(AuthService);
 
   //   Fetch all active photos
