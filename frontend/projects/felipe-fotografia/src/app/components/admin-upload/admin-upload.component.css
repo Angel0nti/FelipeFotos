@@ -195,8 +195,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 0.8rem;
 }
-
-.photo-item button {
+/* Delete button */
+.photo-item .photo-item__actions .btn-delete {
   padding: 0.8rem;
   background-color: transparent;
   border: 1px solid #e05c5c;
@@ -222,7 +222,10 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+
   border-color: #5ce08a;
 }
 
