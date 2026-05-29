@@ -196,20 +196,35 @@
   gap: 0.8rem;
 }
 
-.btn-edit {
+.photo-item button {
   padding: 0.8rem;
   background-color: transparent;
-  border: 1px solid var(--color-accent);
-  color: var(--color-accent);
+  border: 1px solid #e05c5c55;
+  color: #e05c5c;
   font-size: var(--font-size-small);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color var(--transition-fast);
 }
+.photo-item button:hover {
+  background-color: #e05c5c22;
+}
+.photo-item .photo-item__actions .btn-edit {
+  padding: 0.8rem;
+  background-color: transparent;
+  border: 1px solid #5ce08a;
+  color: #5ce08a;
+  font-size: var(--font-size-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border-color: #5ce08a;
+}
 
-.btn-edit:hover {
-  background-color: var(--color-accent);
+.photo-item .photo-item__actions .btn-edit:hover {
+  background-color: #5ce08a22;
   color: var(--color-bg);
 }
 
@@ -239,22 +254,6 @@
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
-
-.photo-item button {
-  padding: 0.8rem;
-  background-color: transparent;
-  border: 1px solid #e05c5c55;
-  color: #e05c5c;
-  font-size: var(--font-size-small);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background-color var(--transition-fast);
-}
-
-.photo-item button:hover {
-  background-color: #e05c5c22;
 }
 
 .photo-item__info {
