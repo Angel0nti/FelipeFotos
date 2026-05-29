@@ -4,7 +4,7 @@ import mongoose, { Schema } from 'mongoose';
 export interface IAbout extends Document {
   title: string; //Section heading
   bio: string; // Bio text
-  photoUrl: string; // Cloudinary URL of the about photo
+  photoUrl: string; // Cloudinary URL of the about pic
   publicId: string; // Cloudinary public_id for the pic deletion
 }
 
