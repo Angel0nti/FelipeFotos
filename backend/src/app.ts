@@ -7,6 +7,7 @@ import './config/cloudinary.js';
 import photosRouter from './routes/photos.js';
 import adminRouter from './routes/admin.js';
 import authRouter from './routes/auth.js';
+import aboutRouter from './routes/about.js';
 
 const app: Express = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/photos', photosRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/about', aboutRouter);
 
 // Health check - useful to verify the server is running on Vercel
 app.get('/api/health', (_, res) => {
