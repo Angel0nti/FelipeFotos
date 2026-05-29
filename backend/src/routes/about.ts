@@ -27,6 +27,7 @@ router.get('/', async (_req: Request, res: Response): Promise<void> => {
 });
 
 // PUT /api/about - update or create the about section (admin only)
+// PUT /api/about — update or create the about section (admin only)
 router.put(
   '/',
   authMiddleware,
@@ -39,14 +40,12 @@ router.put(
       let photoUrl = existing?.photoUrl;
       let publicId = existing?.publicId;
 
-      //   If a new photo was uploaded, replace the old one in Cloudinary
+      // Only update photo if a new one was uploaded
       if (req.file) {
-        // Delete old pic from Cloudinary if exists
         if (existing?.publicId) {
           await cloudinary.uploader.destroy(existing.publicId);
         }
 
-        // Upload new pic to Cloudinary
         const uploadResult = await new Promise<{
           secure_url: string;
           public_id: string;
@@ -60,16 +59,18 @@ router.put(
           );
           stream.end(req.file!.buffer);
         });
+
         photoUrl = uploadResult.secure_url;
         publicId = uploadResult.public_id;
       }
 
-      //   Update if exists, create if not
+      // Update existing or create new — always preserve photo if not changed
       const about = await About.findOneAndUpdate(
         {},
         { title, bio, photoUrl, publicId },
         { new: true, upsert: true },
       );
+
       res.json(about);
     } catch (error) {
       res.status(500).json({ message: 'Error updating about content' });
