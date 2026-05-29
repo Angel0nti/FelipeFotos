@@ -1,5 +1,7 @@
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { PhotoService, Photo } from '../../core/services/photo.service';
+import { AnimationService } from '../../core/services/animation.service';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-gallery',
@@ -7,7 +9,8 @@ import { PhotoService, Photo } from '../../core/services/photo.service';
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.css',
 })
-export class GalleryComponent implements OnInit {
+export class GalleryComponent implements OnInit, AfterViewInit {
+  private animationService = inject(AnimationService);
   private photoService = inject(PhotoService);
 
   // Receives the category name from the parent component
@@ -40,5 +43,10 @@ export class GalleryComponent implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  // Called after the view is fully rendered
+  ngAfterViewInit(): void {
+    this.animationService.observeElements('.gallery-section');
   }
 }

@@ -65,11 +65,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Section reveal animation */
-.section--hidden {
+/* Scroll reveal animation — initial hidden state */
+.reveal {
   opacity: 0;
   transform: translateY(4rem);
   transition:
     opacity 0.8s ease-out,
-    transform var(--transition-slow);
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Triggered by IntersectionObserver */
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
