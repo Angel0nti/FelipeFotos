@@ -11,6 +11,20 @@ const router: IRouter = Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// GET /api/admin/photos — returns ALL photos including inactive ones
+router.get(
+  '/photos',
+  authMiddleware,
+  async (_req: AuthRequest, res: Response): Promise<void> => {
+    try {
+      const photos = await Photo.find().sort({ order: 1 });
+      res.json(photos);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching photos' });
+    }
+  },
+);
+
 // POST /api/admin/photos - upload a new photo
 router.post(
   '/photos',
@@ -53,32 +67,6 @@ router.post(
     }
   },
 );
-
-// DELETE /api/admin/photos/:id - Delete a photo from MongoDB and Cloudinary
-router.delete(
-  '/photos/:id',
-  authMiddleware,
-  async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-      const photo = await Photo.findById(req.params.id);
-
-      if (!photo) {
-        res.status(404).json({ message: 'Photo not found' });
-        return;
-      }
-
-      // Remove the image from Cloudinary using its public_id
-      await cloudinary.uploader.destroy(photo.publicId);
-
-      //   Remove the document from MongoDB
-      await photo.deleteOne();
-      res.json({ message: 'Photo deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: 'Error deletng photo' });
-    }
-  },
-);
-
 // PATCH /api/admin/photos/:id - update order or active status
 router.patch(
   '/photos/:id',
@@ -104,4 +92,29 @@ router.patch(
     }
   },
 );
+// DELETE /api/admin/photos/:id - Delete a photo from MongoDB and Cloudinary
+router.delete(
+  '/photos/:id',
+  authMiddleware,
+  async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+      const photo = await Photo.findById(req.params.id);
+
+      if (!photo) {
+        res.status(404).json({ message: 'Photo not found' });
+        return;
+      }
+
+      // Remove the image from Cloudinary using its public_id
+      await cloudinary.uploader.destroy(photo.publicId);
+
+      //   Remove the document from MongoDB
+      await photo.deleteOne();
+      res.json({ message: 'Photo deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deletng photo' });
+    }
+  },
+);
+
 export default router;
