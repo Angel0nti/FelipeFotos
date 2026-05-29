@@ -24,7 +24,7 @@ export class HeroComponent implements OnInit {
     });
   }
 
-  getHeroUrl(): string {
-    return this.hero()?.photoUrl ?? this.fallbackUrl;
+  getHeroUrl(): string | null {
+    return this.hero()?.photoUrl ?? null;
   }
 }

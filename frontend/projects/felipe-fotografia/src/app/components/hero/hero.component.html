@@ -1,14 +1,13 @@
-<!-- hero.component.html — Full screen hero section -->
 <section class="hero">
-  <!-- Background image — loads from backend or fallback -->
   <div class="hero__image">
-    <img [src]="getHeroUrl()" alt="Felipe Ontiveros Fotografía" />
+    <!-- Only render image when URL is ready -->
+    @if (getHeroUrl()) {
+      <img [src]="getHeroUrl()" alt="Felipe Ontiveros Fotografía" />
+    }
   </div>
 
-  <!-- Dark overlay for text readability -->
   <div class="hero__overlay"></div>
 
-  <!-- Hero content -->
   <div class="hero__content">
     <p class="hero__subtitle">Capturing moments that last forever</p>
     <h1 class="hero__title">Felipe Ontiveros <em>Fotografía</em></h1>
