@@ -208,7 +208,10 @@
   transition: background-color var(--transition-fast);
 }
 .photo-item button:hover {
-  background-color: #e05c5c22;
+  .photo-item button:hover {
+    background-color: #e05c5c;
+    color: #0a0a0a;
+  }
 }
 .photo-item .photo-item__actions .btn-edit {
   padding: 0.8rem;
@@ -224,8 +227,8 @@
 }
 
 .photo-item .photo-item__actions .btn-edit:hover {
-  background-color: #5ce08a22;
-  color: var(--color-bg);
+  background-color: #5ce08a;
+  color: #0a0a0a;
 }
 
 /* Photo list */
