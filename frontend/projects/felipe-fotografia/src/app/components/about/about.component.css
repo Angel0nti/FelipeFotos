@@ -8,6 +8,7 @@
   max-width: 140rem;
   margin: 0 auto;
   padding: var(--spacing-xl) var(--spacing-md);
+  animation: fadeUp 0.8s ease forwards;
 }
 
 /* Photo */

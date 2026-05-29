@@ -32,6 +32,7 @@ export class PhotoService {
   // Modern Angular way to inject dependencies
   private http = inject(HttpClient);
   private apiUrl = 'https://felipe-fotos.vercel.app/api/photos';
+  // private apiUrl = 'http://localhost:3000/api/photos'; // local test
   private authService = inject(AuthService);
 
   //   Fetch all active photos
