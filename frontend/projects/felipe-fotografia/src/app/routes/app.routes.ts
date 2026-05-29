@@ -8,7 +8,7 @@ export const routes: Routes = [
     loadComponent: () => import('../pages/home/home').then((m) => m.HomeComponent),
   },
   {
-    path: 'admin',
+    path: 'kirapitiwis2026',
     // Lazy load the admin panel
     loadComponent: () => import('../pages/admin/admin').then((m) => m.AdminComponent),
   },
