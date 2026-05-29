@@ -9,21 +9,15 @@
     <p class="sucess">{{ success() }}</p>
   }
 
-  <!-- Instructions for the admin -->
-  <div class="upload-instructions">
-    <p>
-      <span>Categoría</span> — Selecciona el álbum donde aparecerá la foto: bodas, exteriores,
-      graduaciones, estudio o eventos.
-    </p>
-    <p>
-      <span>Título</span> — Nombre opcional de la foto. Aparece como overlay al pasar el cursor
-      sobre ella.
-    </p>
-    <p>
-      <span>Orden</span> — Número que define la posición de la foto dentro de su categoría. 1
-      aparece primero, números mayores van después.
-    </p>
+  <!-- Hero image editor -->
+  <div class="about-form">
+    <h3>Hero Image</h3>
+    <input type="file" accept="image/*" (change)="onHeroFileSelected($event)" />
+    <button (click)="onUpdateHero()" [disabled]="loadingHero()">
+      {{ loadingHero() ? 'Uploading...' : 'Update Hero Image' }}
+    </button>
   </div>
+
   <!-- About section editor -->
   <div class="about-form">
     <h3>Acerca de</h3>
@@ -48,6 +42,23 @@
       {{ loadingAbout() ? 'Guardando...' : 'Guardar cambios' }}
     </button>
   </div>
+
+  <!-- Instructions for the admin -->
+  <div class="upload-instructions">
+    <p>
+      <span>Categoría</span> — Selecciona el álbum donde aparecerá la foto: bodas, exteriores,
+      graduaciones, estudio o eventos.
+    </p>
+    <p>
+      <span>Título</span> — Nombre opcional de la foto. Aparece como overlay al pasar el cursor
+      sobre ella.
+    </p>
+    <p>
+      <span>Orden</span> — Número que define la posición de la foto dentro de su categoría. 1
+      aparece primero, números mayores van después.
+    </p>
+  </div>
+
   <div class="form">
     <input type="file" accept="image/*" (change)="onFileSelected($event)" />
 

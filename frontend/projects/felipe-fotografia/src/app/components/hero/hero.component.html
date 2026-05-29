@@ -1,29 +1,8 @@
 <!-- hero.component.html — Full screen hero section -->
 <section class="hero">
-  <!-- Background image with srcset for responsive loading -->
+  <!-- Background image — loads from backend or fallback -->
   <div class="hero__image">
-    <picture>
-      <source
-        type="image/avif"
-        srcset="
-          images/hero/humbe1-300.avif   300w,
-          images/hero/humbe1-600.avif   600w,
-          images/hero/humbe1-1200.avif 1200w,
-          images/hero/humbe1.avif      2000w
-        "
-        sizes="100vw"
-      />
-      <source
-        type="image/webp"
-        srcset="
-          images/hero/humbe1-300.webp   300w,
-          images/hero/humbe1-600.webp   600w,
-          images/hero/humbe1-1200.webp 1200w
-        "
-        sizes="100vw"
-      />
-      <img src="images/hero/humbe1.avif" alt="Felipe Mora Fotografía" />
-    </picture>
+    <img [src]="getHeroUrl()" alt="Felipe Ontiveros Fotografía" />
   </div>
 
   <!-- Dark overlay for text readability -->

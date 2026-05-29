@@ -32,6 +32,10 @@ export class AdminUploadComponent implements OnInit {
   aboutFile = signal<File | null>(null);
   loadingAbout = signal<boolean>(false);
 
+  // Hero section signals
+  heroFile = signal<File | null>(null);
+  loadingHero = signal<boolean>(false);
+
   //   Available categories matching the backend enum
   categories = ['weddings', 'outdoors', 'graduations', 'studio', 'events'];
 
@@ -124,6 +128,37 @@ export class AdminUploadComponent implements OnInit {
       error: () => {
         this.error.set('Error updating about section');
         this.loadingAbout.set(false);
+      },
+    });
+  }
+
+  onHeroFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.[0]) {
+      this.heroFile.set(input.files[0]);
+    }
+  }
+
+  onUpdateHero(): void {
+    if (!this.heroFile()) {
+      this.error.set('Please select a photo');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('photo', this.heroFile()!);
+
+    this.loadingHero.set(true);
+    this.error.set(null);
+
+    this.photoService.updateHero(formData).subscribe({
+      next: () => {
+        this.success.set('Hero image updated successfully');
+        this.loadingHero.set(false);
+      },
+      error: () => {
+        this.error.set('Error updating hero image');
+        this.loadingHero.set(false);
       },
     });
   }

@@ -25,6 +25,13 @@ export interface About {
   publicId: string;
 }
 
+// Interface for the hero section
+export interface Hero {
+  _id: string;
+  photoUrl: string;
+  publicId: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -75,5 +82,18 @@ export class PhotoService {
     return this.http.put<About>(`${this.apiUrl.replace('/photos', '/about')}`, formData, {
       headers,
     });
+  }
+
+  // Fetch the hero image
+  getHero(): Observable<Hero> {
+    return this.http.get<Hero>(`${this.apiUrl.replace('/photos', '/hero')}`);
+  }
+
+  // Update the hero image (admin only)
+  updateHero(formData: FormData): Observable<Hero> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.put<Hero>(`${this.apiUrl.replace('/photos', '/hero')}`, formData, { headers });
   }
 }
