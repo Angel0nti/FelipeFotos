@@ -47,6 +47,14 @@ export class PhotoService {
     return this.http.get<Photo[]>(this.apiUrl);
   }
 
+  // Fetch ALL photos including inactive ones (admin only)
+  getAllPhotos(): Observable<Photo[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.get<Photo[]>(`https://felipe-fotos.vercel.app/api/admin/photos`, { headers });
+  }
+
   getPhotosByCategory(category: string): Observable<Photo[]> {
     return this.http.get<Photo[]>(`${this.apiUrl}/${category}`);
   }

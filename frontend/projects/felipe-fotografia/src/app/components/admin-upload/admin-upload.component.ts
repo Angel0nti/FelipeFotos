@@ -68,7 +68,7 @@ export class AdminUploadComponent implements OnInit {
   }
 
   loadPhotos(): void {
-    this.photoService.getPhotos().subscribe({
+    this.photoService.getAllPhotos().subscribe({
       next: (data) => this.photos.set(data),
       error: () => this.error.set('Error loading photos'),
     });
