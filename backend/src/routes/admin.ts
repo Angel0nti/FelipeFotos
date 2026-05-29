@@ -85,11 +85,11 @@ router.patch(
   authMiddleware,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-      const { order, active } = req.body;
+      const { order, active, photoTitle } = req.body;
 
       const photo = await Photo.findByIdAndUpdate(
         req.params.id,
-        { order, active },
+        { order, active, photoTitle },
         // Return the updated document
         { new: true },
       );
