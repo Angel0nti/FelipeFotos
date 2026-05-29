@@ -1,0 +1,78 @@
+/* about.component.css — About section styles */
+
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: center;
+  max-width: 140rem;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+/* Photo */
+.about__image {
+  position: relative;
+  overflow: hidden;
+}
+
+.about__image img {
+  width: 100%;
+  height: 60rem;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform var(--transition-slow);
+}
+
+.about__image:hover img {
+  transform: scale(1.03);
+}
+
+/* Text content */
+.about__content {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.about__label {
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.about__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-heading);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+/* Decorative line */
+.about__line {
+  height: 1px;
+  width: 6rem;
+  background-color: var(--color-accent);
+}
+
+.about__bio {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+
+  .about__image img {
+    height: 40rem;
+  }
+}

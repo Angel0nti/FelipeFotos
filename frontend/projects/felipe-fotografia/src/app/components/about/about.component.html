@@ -1,0 +1,17 @@
+<!-- about.component.html — About section with photo and bio -->
+@if (!loading() && about()) {
+  <section class="about reveal">
+    <!-- Photo -->
+    <div class="about__image">
+      <img [src]="about()!.photoUrl" [alt]="about()!.title" loading="lazy" />
+    </div>
+
+    <!-- Text content -->
+    <div class="about__content">
+      <p class="about__label">Acerca de</p>
+      <h2 class="about__title">{{ about()!.title }}</h2>
+      <div class="about__line"></div>
+      <p class="about__bio">{{ about()!.bio }}</p>
+    </div>
+  </section>
+}

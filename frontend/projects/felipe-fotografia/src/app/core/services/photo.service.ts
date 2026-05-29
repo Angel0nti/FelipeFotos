@@ -16,6 +16,15 @@ export interface Photo {
   active: boolean;
 }
 
+// Interface for the about section content
+export interface About {
+  _id: string;
+  title: string;
+  bio: string;
+  photoUrl: string;
+  publicId: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -53,5 +62,19 @@ export class PhotoService {
       `https://felipe-fotos-db9tkop5x-angel-portfolio-project.vercel.app/api/admin/photos/${id}`,
       { headers },
     );
+  }
+  // Fetch the about section content
+  getAbout(): Observable<About> {
+    return this.http.get<About>(`${this.apiUrl.replace('/photos', '/about')}`);
+  }
+
+  // Update the about section content (admin only)
+  updateAbout(formData: FormData): Observable<About> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.put<About>(`${this.apiUrl.replace('/photos', '/about')}`, formData, {
+      headers,
+    });
   }
 }

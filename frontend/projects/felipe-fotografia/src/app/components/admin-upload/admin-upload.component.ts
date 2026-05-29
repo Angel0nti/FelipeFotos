@@ -26,6 +26,12 @@ export class AdminUploadComponent implements OnInit {
   error = signal<string | null>(null);
   success = signal<string | null>(null);
 
+  // About section signals
+  aboutTitle = signal<string>('');
+  aboutBio = signal<string>('');
+  aboutFile = signal<File | null>(null);
+  loadingAbout = signal<boolean>(false);
+
   //   Available categories matching the backend enum
   categories = ['weddings', 'outdoors', 'graduations', 'studio', 'events'];
 
@@ -80,6 +86,34 @@ export class AdminUploadComponent implements OnInit {
     this.photoService.deletePhoto(id).subscribe({
       next: () => this.loadPhotos(),
       error: () => this.error.set('Error deleting photo'),
+    });
+  }
+
+  onAboutFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.[0]) {
+      this.aboutFile.set(input.files[0]);
+    }
+  }
+  onUpdateAbout(): void {
+    this.loadingAbout.set(true);
+
+    const formData = new FormData();
+    formData.append('title', this.aboutTitle());
+    formData.append('bio', this.aboutBio());
+    if (this.aboutFile()) {
+      formData.append('photo', this.aboutFile()!);
+    }
+
+    this.photoService.updateAbout(formData).subscribe({
+      next: () => {
+        this.success.set('About section updated successfully');
+        this.loadingAbout.set(false);
+      },
+      error: () => {
+        this.error.set('Error updating about section');
+        this.loadingAbout.set(false);
+      },
     });
   }
 }

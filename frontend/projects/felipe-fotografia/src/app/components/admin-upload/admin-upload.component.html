@@ -24,6 +24,30 @@
       aparece primero, números mayores van después.
     </p>
   </div>
+  <!-- About section editor -->
+  <div class="about-form">
+    <h3>Acerca de</h3>
+
+    <input
+      type="text"
+      placeholder="Título (ej. Felipe Ontiveros)"
+      [value]="aboutTitle()"
+      (input)="aboutTitle.set($any($event.target).value)"
+    />
+
+    <textarea
+      placeholder="Biografía..."
+      [value]="aboutBio()"
+      (input)="aboutBio.set($any($event.target).value)"
+      rows="5"
+    ></textarea>
+
+    <input type="file" accept="image/*" (change)="onAboutFileSelected($event)" />
+
+    <button (click)="onUpdateAbout()" [disabled]="loadingAbout()">
+      {{ loadingAbout() ? 'Guardando...' : 'Guardar cambios' }}
+    </button>
+  </div>
   <div class="form">
     <input type="file" accept="image/*" (change)="onFileSelected($event)" />
 

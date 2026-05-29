@@ -4,11 +4,12 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { HeroComponent } from '../../components/hero/hero.component';
 import { GalleryComponent } from '../../components/gallery/gallery.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { AboutComponent } from '../../components/about/about.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
   styleUrl: './home.css',
-  imports: [NavbarComponent, HeroComponent, GalleryComponent, FooterComponent],
+  imports: [NavbarComponent, HeroComponent, GalleryComponent, FooterComponent, AboutComponent],
 })
 export class HomeComponent {}
