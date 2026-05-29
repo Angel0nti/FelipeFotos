@@ -199,19 +199,19 @@
 .photo-item button {
   padding: 0.8rem;
   background-color: transparent;
-  border: 1px solid #e05c5c55;
+  border: 1px solid #e05c5c;
   color: #e05c5c;
   font-size: var(--font-size-small);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
-.photo-item button:hover {
-  .photo-item button:hover {
-    background-color: #e05c5c;
-    color: #0a0a0a;
-  }
+.photo-item .photo-item__actions .btn-delete:hover {
+  background-color: #e05c5c;
+  color: #0a0a0a;
 }
 .photo-item .photo-item__actions .btn-edit {
   padding: 0.8rem;
