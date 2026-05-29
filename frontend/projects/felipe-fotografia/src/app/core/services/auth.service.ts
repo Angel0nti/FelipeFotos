@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://felipe-fotos-db9tkop5x-angel-portfolio-project.vercel.app/api/auth';
+  private apiUrl = 'https://felipe-fotos.vercel.app/api/auth';
 
   private hasToken(): boolean {
     return !!localStorage.getItem('admin_token');
