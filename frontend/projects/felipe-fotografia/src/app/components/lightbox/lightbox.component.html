@@ -1,0 +1,33 @@
+<!-- lightbox.component.html — Full screen photo overlay -->
+<div class="lightbox" (click)="close()">
+  <!-- Content stops click from propagating to overlay -->
+  <div class="lightbox__content" (click)="$event.stopPropagation()">
+    <!-- Close button -->
+    <button class="lightbox__close" (click)="close()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- Previous arrow -->
+    <button class="lightbox__arrow lightbox__arrow--prev" (click)="prev()">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <!-- Current photo -->
+    <div class="lightbox__image">
+      <img [src]="currentPhoto().url" [alt]="currentPhoto().photoTitle || 'Photo'" />
+    </div>
+
+    <!-- Next arrow -->
+    <button class="lightbox__arrow lightbox__arrow--next" (click)="next()">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- Counter and title -->
+    <div class="lightbox__footer">
+      @if (currentPhoto().photoTitle) {
+        <p class="lightbox__title">{{ currentPhoto().photoTitle }}</p>
+      }
+      <span class="lightbox__counter"> {{ currentIndex() + 1 }} / {{ photos.length }} </span>
+    </div>
+  </div>
+</div>

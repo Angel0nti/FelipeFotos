@@ -2,10 +2,11 @@ import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { PhotoService, Photo } from '../../core/services/photo.service';
 import { AnimationService } from '../../core/services/animation.service';
 import { AfterViewInit } from '@angular/core';
+import { LightboxComponent } from '../lightbox/lightbox.component';
 
 @Component({
   selector: 'app-gallery',
-  imports: [],
+  imports: [LightboxComponent],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.css',
 })
@@ -25,6 +26,10 @@ export class GalleryComponent implements OnInit, AfterViewInit {
   photos = signal<Photo[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+
+  // Add signals for the lightbox
+  lightboxOpen = signal<boolean>(false);
+  lightboxIndex = signal<number>(0);
 
   // Transforms the Cloudinary URL to add automatic format and quality optimization
   getOptimizedUrl(url: string): string {
@@ -48,5 +53,14 @@ export class GalleryComponent implements OnInit, AfterViewInit {
   // Called after the view is fully rendered
   ngAfterViewInit(): void {
     this.animationService.observeElements('.gallery-section');
+  }
+
+  openLightbox(index: number): void {
+    this.lightboxIndex.set(index);
+    this.lightboxOpen.set(true);
+  }
+
+  closeLightbox(): void {
+    this.lightboxOpen.set(false);
   }
 }

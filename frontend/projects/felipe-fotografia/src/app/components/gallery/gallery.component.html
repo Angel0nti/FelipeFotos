@@ -26,7 +26,7 @@
       [class.grid]="layout === 'grid'"
     >
       @for (photo of photos(); track photo._id) {
-        <figure class="gallery-section__figure">
+        <figure class="gallery-section__figure" (click)="openLightbox($index)">
           <img
             [src]="getOptimizedUrl(photo.url)"
             [alt]="photo.photoTitle || category"
@@ -39,5 +39,8 @@
         </figure>
       }
     </div>
+    @if (lightboxOpen()) {
+      <app-lightbox [photos]="photos()" [startIndex]="lightboxIndex()" (closed)="closeLightbox()" />
+    }
   }
 </section>
