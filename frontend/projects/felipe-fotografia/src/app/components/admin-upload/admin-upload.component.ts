@@ -37,6 +37,17 @@ export class AdminUploadComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPhotos();
+
+    // Load existing about content on init
+    this.photoService.getAbout().subscribe({
+      next: (data) => {
+        this.aboutTitle.set(data.title);
+        this.aboutBio.set(data.bio);
+      },
+      error: () => {
+        // No about content yet, leave fields empty
+      },
+    });
   }
 
   onFileSelected(event: Event): void {
