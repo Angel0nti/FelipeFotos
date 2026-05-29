@@ -6,6 +6,7 @@ import { LightboxComponent } from '../lightbox/lightbox.component';
 
 @Component({
   selector: 'app-gallery',
+  standalone: true,
   imports: [LightboxComponent],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.css',
