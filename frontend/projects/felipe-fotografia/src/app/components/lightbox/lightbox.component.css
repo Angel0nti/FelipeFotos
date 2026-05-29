@@ -146,4 +146,12 @@
   .lightbox__arrow--next {
     right: var(--spacing-xs);
   }
+  .lightbox__close {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+  }
+
+  .lightbox__content {
+    padding: var(--spacing-sm);
+  }
 }
