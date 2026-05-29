@@ -5,7 +5,7 @@ export interface IAbout extends Document {
   title: string; //Section heading
   bio: string; // Bio text
   photoUrl: string; // Cloudinary URL of the about photo
-  publicId: string; // Cloudinary public_id for deletion
+  publicId: string; // Cloudinary public_id for the pic deletion
 }
 
 const AboutSchema = new Schema<IAbout>(
