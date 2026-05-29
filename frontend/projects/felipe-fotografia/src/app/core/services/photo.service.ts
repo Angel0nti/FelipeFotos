@@ -22,7 +22,7 @@ export interface Photo {
 export class PhotoService {
   // Modern Angular way to inject dependencies
   private http = inject(HttpClient);
-  private apiUrl = 'https://felipe-fotos-eloljb18a-angel-portfolio-project.vercel.app/api/photos';
+  private apiUrl = 'https://felipe-fotos-db9tkop5x-angel-portfolio-project.vercel.app/api/photos';
   private authService = inject(AuthService);
 
   //   Fetch all active photos
@@ -39,7 +39,7 @@ export class PhotoService {
       Authorization: `Bearer ${this.authService.getToken()}`,
     });
     return this.http.post<Photo>(
-      `https://felipe-fotos-eloljb18a-angel-portfolio-project.vercel.app/api/admin/photos`,
+      `https://felipe-fotos-db9tkop5x-angel-portfolio-project.vercel.app/api/admin/photos`,
       formData,
       { headers },
     );
@@ -50,7 +50,7 @@ export class PhotoService {
       Authorization: `Bearer ${this.authService.getToken()}`,
     });
     return this.http.delete<{ message: string }>(
-      `https://felipe-fotos-eloljb18a-angel-portfolio-project.vercel.app/api/admin/photos/${id}`,
+      `https://felipe-fotos-db9tkop5x-angel-portfolio-project.vercel.app/api/admin/photos/${id}`,
       { headers },
     );
   }
