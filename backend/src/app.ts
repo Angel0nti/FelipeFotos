@@ -9,12 +9,9 @@ import adminRouter from './routes/admin.js';
 import authRouter from './routes/auth.js';
 
 const app: Express = express();
-const PORT = process.env.PORT || 3000;
 
-// Allow requests from the frontend origin
-// app.use(cors({ origin: process.env.FRONTEND_URL }));
-// Temporarily allow all origins for debugging
-app.use(cors());
+// Only allow requests from the production frontend
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 // Parse incoming JSON requests
 app.use(express.json());
@@ -31,7 +28,5 @@ app.get('/api/health', (_, res) => {
 
 // Connect to MongoDB
 connectDB();
-
-// Vercel uses the exported app, not app.listen()
 
 export default app;
