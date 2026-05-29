@@ -20,6 +20,12 @@ export class AdminUploadComponent implements OnInit {
   photoTitle = signal<string>('');
   order = signal<number>(0);
 
+  // Track which photo is being edited
+  editingId = signal<string | null>(null);
+  editTitle = signal<string>('');
+  editOrder = signal<number>(0);
+  editActive = signal<boolean>(true);
+
   //   State
   photos = signal<Photo[]>([]);
   loading = signal<boolean>(false);
@@ -95,6 +101,39 @@ export class AdminUploadComponent implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  // Open edit form for a photo
+  onEdit(photo: Photo): void {
+    this.editingId.set(photo._id);
+    this.editTitle.set(photo.photoTitle || '');
+    this.editOrder.set(photo.order);
+    this.editActive.set(photo.active);
+  }
+
+  // Cancel editing
+  onCancelEdit(): void {
+    this.editingId.set(null);
+  }
+
+  // Save photo changes
+  onSaveEdit(id: string): void {
+    this.photoService
+      .updatePhoto(id, {
+        photoTitle: this.editTitle(),
+        order: this.editOrder(),
+        active: this.editActive(),
+      })
+      .subscribe({
+        next: () => {
+          this.success.set('Photo updated successfully');
+          this.editingId.set(null);
+          this.loadPhotos();
+        },
+        error: () => {
+          this.error.set('Error updating photo');
+        },
+      });
   }
 
   onDelete(id: string): void {

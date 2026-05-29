@@ -118,6 +118,101 @@
   cursor: not-allowed;
 }
 
+/* Edit form inside photo item */
+.photo-item__edit {
+  display: grid;
+  gap: 0.8rem;
+  padding: var(--spacing-xs);
+}
+
+.photo-item__edit input[type='text'],
+.photo-item__edit input[type='number'] {
+  padding: 0.8rem 1.2rem;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition-fast);
+}
+
+.photo-item__edit input:focus {
+  border-color: var(--color-accent);
+}
+
+.photo-item__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.photo-item__edit-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.btn-save {
+  padding: 0.8rem;
+  background-color: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: var(--font-size-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-save:hover {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.btn-cancel {
+  padding: 0.8rem;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.btn-cancel:hover {
+  border-color: var(--color-text-secondary);
+}
+
+.photo-item__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.btn-edit {
+  padding: 0.8rem;
+  background-color: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: var(--font-size-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-edit:hover {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
 /* Photo list */
 .photo-list {
   display: grid;

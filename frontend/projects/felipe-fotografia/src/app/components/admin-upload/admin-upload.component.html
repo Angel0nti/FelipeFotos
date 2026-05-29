@@ -1,7 +1,7 @@
 <!-- admin-upload.component.html — Upload form and photo list -->
 <div class="upload-container">
-  <h2>Photo Management</h2>
-  <button (click)="authService.logout()">Logout</button>
+  <h2>Manejo de Fotos</h2>
+  <button (click)="authService.logout()">Salir</button>
   @if (error()) {
     <p class="error">{{ error() }}</p>
   }
@@ -11,10 +11,10 @@
 
   <!-- Hero image editor -->
   <div class="about-form">
-    <h3>Hero Image</h3>
+    <h3>Imagen del Hero</h3>
     <input type="file" accept="image/*" (change)="onHeroFileSelected($event)" />
     <button (click)="onUpdateHero()" [disabled]="loadingHero()">
-      {{ loadingHero() ? 'Uploading...' : 'Update Hero Image' }}
+      {{ loadingHero() ? 'Subiendo...' : 'Actualiza Hero' }}
     </button>
   </div>
 
@@ -91,12 +91,46 @@
     @for (photo of photos(); track photo._id) {
       <div class="photo-item">
         <img [src]="photo.url" [alt]="photo.photoTitle || 'Photo'" />
-        <div class="photo-item__info">
-          <span class="photo-item__category">{{ photo.category }}</span>
-          <span class="photo-item__title">{{ photo.photoTitle || 'Sin título' }}</span>
-          <span class="photo-item__order">Orden de aparicion: {{ photo.order }}</span>
-        </div>
-        <button (click)="onDelete(photo._id)">Delete</button>
+
+        <!-- Edit form — shown when this photo is being edited -->
+        @if (editingId() === photo._id) {
+          <div class="photo-item__edit">
+            <input
+              type="text"
+              placeholder="Title"
+              [value]="editTitle()"
+              (input)="editTitle.set($any($event.target).value)"
+            />
+            <input
+              type="number"
+              placeholder="Order"
+              [value]="editOrder()"
+              (input)="editOrder.set(+$any($event.target).value)"
+            />
+            <label class="photo-item__toggle">
+              <input
+                type="checkbox"
+                [checked]="editActive()"
+                (change)="editActive.set($any($event.target).checked)"
+              />
+              Visible
+            </label>
+            <div class="photo-item__edit-actions">
+              <button class="btn-save" (click)="onSaveEdit(photo._id)">Guardar</button>
+              <button class="btn-cancel" (click)="onCancelEdit()">Cancelar</button>
+            </div>
+          </div>
+        } @else {
+          <div class="photo-item__info">
+            <span class="photo-item__category">{{ photo.category }}</span>
+            <span class="photo-item__title">{{ photo.photoTitle || 'Sin título' }}</span>
+            <span class="photo-item__order">Orden: {{ photo.order }}</span>
+          </div>
+          <div class="photo-item__actions">
+            <button class="btn-edit" (click)="onEdit(photo)">Editar</button>
+            <button (click)="onDelete(photo._id)">Borrar</button>
+          </div>
+        }
       </div>
     }
   </div>

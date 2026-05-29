@@ -60,6 +60,19 @@ export class PhotoService {
     });
   }
 
+  // Update photo metadata (admin only)
+  updatePhoto(
+    id: string,
+    data: { order?: number; photoTitle?: string; active?: boolean },
+  ): Observable<Photo> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.patch<Photo>(`https://felipe-fotos.vercel.app/api/admin/photos/${id}`, data, {
+      headers,
+    });
+  }
+
   deletePhoto(id: string): Observable<{ message: string }> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`,
