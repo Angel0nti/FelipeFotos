@@ -1,5 +1,5 @@
 // navbar.component.ts — Sticky nav and mobile menu logic
-import { Component, signal, HostListener, OnInit } from '@angular/core';
+import { Component, signal, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',

@@ -1,7 +1,6 @@
 // about.component.ts — About section, loads content from backend
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, AfterViewInit } from '@angular/core';
 import { PhotoService, About } from '../../core/services/photo.service';
-import { AfterViewInit } from '@angular/core';
 import { AnimationService } from '../../core/services/animation.service';
 
 @Component({
