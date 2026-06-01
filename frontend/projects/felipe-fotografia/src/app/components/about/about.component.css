@@ -108,4 +108,7 @@
   .about__grid {
     grid-template-columns: 1fr;
   }
+  .about__header {
+    margin-bottom: var(--spacing-md);
+  }
 }

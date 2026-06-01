@@ -63,3 +63,12 @@
   text-align: center;
   letter-spacing: 0.05em;
 }
+@media (max-width: 600px) {
+  .footer__social {
+    gap: var(--spacing-sm);
+  }
+
+  .footer__credits {
+    font-size: 1rem;
+  }
+}
