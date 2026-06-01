@@ -57,6 +57,8 @@ export class GalleryComponent implements OnInit, AfterViewInit {
   }
 
   openLightbox(index: number): void {
+    // Disable lightbox on mobile devices
+    if (window.innerWidth <= 600) return;
     this.lightboxIndex.set(index);
     this.lightboxOpen.set(true);
   }
