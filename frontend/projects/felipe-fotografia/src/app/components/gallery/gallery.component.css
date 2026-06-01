@@ -4,6 +4,7 @@
   padding: var(--spacing-xl) var(--spacing-md);
   max-width: 140rem;
   margin: 0 auto;
+  scroll-margin-top: 7rem;
 }
 
 /* Section header */
