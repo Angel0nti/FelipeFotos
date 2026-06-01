@@ -95,10 +95,12 @@ export class AdminUploadComponent implements OnInit {
         this.success.set('Photo uploaded successfully');
         this.loading.set(false);
         this.loadPhotos();
+        this.clearMessages();
       },
       error: () => {
         this.error.set('Error uploading photo');
         this.loading.set(false);
+        this.clearMessages();
       },
     });
   }
@@ -129,17 +131,25 @@ export class AdminUploadComponent implements OnInit {
           this.success.set('Photo updated successfully');
           this.editingId.set(null);
           this.loadPhotos();
+          this.clearMessages();
         },
         error: () => {
           this.error.set('Error updating photo');
+          this.clearMessages();
         },
       });
   }
 
   onDelete(id: string): void {
     this.photoService.deletePhoto(id).subscribe({
-      next: () => this.loadPhotos(),
-      error: () => this.error.set('Error deleting photo'),
+      next: () => {
+        this.loadPhotos();
+        this.clearMessages();
+      },
+      error: () => {
+        this.error.set('Error deleting photo');
+        this.clearMessages();
+      },
     });
   }
 
@@ -163,10 +173,12 @@ export class AdminUploadComponent implements OnInit {
       next: () => {
         this.success.set('About section updated successfully');
         this.loadingAbout.set(false);
+        this.clearMessages();
       },
       error: () => {
         this.error.set('Error updating about section');
         this.loadingAbout.set(false);
+        this.clearMessages();
       },
     });
   }
@@ -194,11 +206,21 @@ export class AdminUploadComponent implements OnInit {
       next: () => {
         this.success.set('Hero image updated successfully');
         this.loadingHero.set(false);
+        this.clearMessages();
       },
       error: () => {
         this.error.set('Error updating hero image');
         this.loadingHero.set(false);
+        this.clearMessages();
       },
     });
+  }
+
+  // Auto-clear success and error messages after 4 seconds
+  private clearMessages(): void {
+    setTimeout(() => {
+      this.success.set(null);
+      this.error.set(null);
+    }, 4000);
   }
 }
