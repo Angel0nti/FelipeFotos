@@ -17,7 +17,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  //   Compare the received password with the hashed one stored in .env
+  //   Compare the received password with the hashed one stored in the .env
   const isValid = await bcrypt.compare(password, adminPassword);
   if (!isValid) {
     res.status(401).json({ message: 'Invalid password' });
