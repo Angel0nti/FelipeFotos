@@ -1,5 +1,5 @@
 // photo.ts Mongoose schema for a photo document
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 // Interface to type the Phot document in TypeScript
 export interface IPhoto extends Document {
@@ -22,7 +22,7 @@ const PhotoSchema = new Schema<IPhoto>(
       // Only allow these category values
       enum: ['weddings', 'outdoors', 'graduations', 'studio', 'events'],
     },
-    order: { type: Number, required: true },
+    order: { type: Number, default: 0 },
     photoTitle: { type: String },
     active: { type: Boolean, default: true },
   },

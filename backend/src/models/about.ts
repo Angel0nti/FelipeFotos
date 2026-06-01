@@ -1,5 +1,5 @@
 // about.ts - Schema for the about section content
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IAbout extends Document {
   title: string; //Section heading
