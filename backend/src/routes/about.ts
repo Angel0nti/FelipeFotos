@@ -4,6 +4,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import About from '../models/about.js';
 import authMiddleware, { AuthRequest } from '../middleware/auth.js';
+import { aboutRules, validate } from '../middleware/validators.js';
 
 const router: IRouter = Router();
 
@@ -27,11 +28,12 @@ router.get('/', async (_req: Request, res: Response): Promise<void> => {
 });
 
 // PUT /api/about - update or create the about section (admin only)
-// PUT /api/about — update or create the about section (admin only)
 router.put(
   '/',
   authMiddleware,
   upload.single('photo'),
+  aboutRules,
+  validate,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       const { title, bio } = req.body;

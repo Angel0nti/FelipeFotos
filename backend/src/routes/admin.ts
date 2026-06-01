@@ -4,6 +4,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import Photo from '../models/photo.js';
 import authMiddleware, { AuthRequest } from '../middleware/auth.js';
+import { photoRules, validate } from '../middleware/validators.js';
 
 const router: IRouter = Router();
 
@@ -30,6 +31,8 @@ router.post(
   '/photos',
   authMiddleware,
   upload.single('photo'),
+  photoRules,
+  validate,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.file) {

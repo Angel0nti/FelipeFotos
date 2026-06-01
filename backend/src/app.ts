@@ -9,11 +9,15 @@ import adminRouter from './routes/admin.js';
 import authRouter from './routes/auth.js';
 import aboutRouter from './routes/about.js';
 import heroRouter from './routes/hero.js';
+import helmet from 'helmet';
 
 const app: Express = express();
 
 // Only allow requests from the production frontend
 app.use(cors({ origin: process.env.FRONTEND_URL }));
+
+// Add security headers to all responses
+app.use(helmet());
 
 // Parse incoming JSON requests
 app.use(express.json());
