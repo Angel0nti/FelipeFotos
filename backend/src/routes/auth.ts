@@ -1,11 +1,12 @@
 // auth.ts Admin login route, generates a JWT token
 import { Router, Request, Response, IRouter } from 'express';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const router: IRouter = Router();
 
 // Post /api/auth/login - receives password, returns token if valid
-router.post('/login', (req: Request, res: Response): void => {
+router.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { password } = req.body;
 
   const adminPassword = process.env.ADMIN_PASSWORD;
@@ -16,8 +17,9 @@ router.post('/login', (req: Request, res: Response): void => {
     return;
   }
 
-  //   Compare the received password with the one stored in .env
-  if (password !== adminPassword) {
+  //   Compare the received password with the hashed one stored in .env
+  const isValid = await bcrypt.compare(password, adminPassword);
+  if (!isValid) {
     res.status(401).json({ message: 'Invalid password' });
     return;
   }
