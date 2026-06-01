@@ -1,0 +1,4 @@
+/* home.css — No offset needed for hero, but galleries need spacing */
+main {
+  padding-top: 0;
+}
