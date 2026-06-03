@@ -1,16 +1,11 @@
 // admin.ts Protected routes for photo management
-import { Router, Request, Response, IRouter } from 'express';
+import { Router, Response, IRouter } from 'express';
 import { v2 as cloudinary } from 'cloudinary';
-import multer from 'multer';
+
 import Photo from '../models/photo.js';
 import authMiddleware, { AuthRequest } from '../middleware/auth.js';
-import { photoRules, validate } from '../middleware/validators.js';
 
 const router: IRouter = Router();
-
-// Store uplodaded files in memory before sending yo Cloudinary
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 // GET /api/admin/photos — returns ALL photos including inactive ones
 router.get(
@@ -26,50 +21,62 @@ router.get(
   },
 );
 
-// POST /api/admin/photos - upload a new photo
+router.get(
+  '/sign-upload',
+  authMiddleware,
+  async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+      const { folder } = req.query;
+      const timestamp = Math.round(new Date().getTime() / 1000);
+
+      // Generate signature using Cloudinary API secret
+      const signature = cloudinary.utils.api_sign_request(
+        { timestamp, folder: `felipe-fotografia/${folder}` },
+        process.env.CLOUDINARY_API_SECRET!,
+      );
+
+      res.json({
+        timestamp,
+        signature,
+        folder: `felipe-fotografia/${folder}`,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      });
+    } catch (error) {
+      res.status(500).json({ message: 'Error generating signature' });
+    }
+  },
+);
+
+// POST /api/admin/photos — saves photo metadata after direct Cloudinary upload
 router.post(
   '/photos',
   authMiddleware,
-  upload.single('photo'),
-  photoRules,
-  validate,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-      if (!req.file) {
-        res.status(400).json({ message: 'No file provided' });
+      const { url, publicId, category, order, photoTitle } = req.body;
+
+      if (!url || !publicId || !category) {
+        res.status(400).json({ message: 'Missing required fields' });
         return;
       }
-      const { category, order, photoTitle } = req.body;
 
-      // Upload the file buffer to Cloudinary inside a category folder
-      const uploadResult = await new Promise<{
-        secure_url: string;
-        public_id: string;
-      }>((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: `felipe-fotografia/${category}` },
-          (error, result) => {
-            if (error || !result) return reject(error);
-            resolve(result);
-          },
-        );
-        stream.end(req.file!.buffer);
-      });
-
-      //   Save the Cloudinary URL and metadata to MongoDB
+      // Save the Cloudinary URL and metadata to MongoDB
       const photo = await Photo.create({
-        url: uploadResult.secure_url,
-        publicId: uploadResult.public_id,
+        url,
+        publicId,
         category,
         order: Number(order) || 0,
         photoTitle,
       });
+
       res.status(201).json(photo);
     } catch (error) {
-      res.status(500).json({ message: 'Error uploading photo' });
+      res.status(500).json({ message: 'Error saving photo' });
     }
   },
 );
+
 // PATCH /api/admin/photos/:id - update order or active status
 router.patch(
   '/photos/:id',
