@@ -31,7 +31,7 @@ router.get(
 
       // Generate signature using Cloudinary API secret
       const signature = cloudinary.utils.api_sign_request(
-        { timestamp, folder: `felipe-fotografia/${folder}` },
+        { timestamp },
         process.env.CLOUDINARY_API_SECRET!,
       );
 
