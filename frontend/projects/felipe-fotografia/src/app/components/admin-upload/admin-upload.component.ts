@@ -86,6 +86,7 @@ export class AdminUploadComponent implements OnInit {
     // Step 1 request a signature from the backend
     this.photoService.getUploadSignature(this.category()).subscribe({
       next: async (sig) => {
+        console.log('sig recibida:', sig);
         try {
           // Step 2 Build the form data for Cloudinary direct upload
           const formData = new FormData();
