@@ -35,10 +35,6 @@ router.get(
         process.env.CLOUDINARY_API_SECRET!,
       );
 
-      console.log('folder recibido:', folder);
-      console.log('timestamp:', timestamp);
-      console.log('signature:', signature);
-
       res.json({
         timestamp,
         signature,
