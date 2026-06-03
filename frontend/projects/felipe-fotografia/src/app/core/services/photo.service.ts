@@ -32,6 +32,15 @@ export interface Hero {
   publicId: string;
 }
 
+// Interface for Cloudinary signature response
+export interface CloudinarySignature {
+  timestamp: number;
+  signature: string;
+  folder: string;
+  api_key: string;
+  cloud_name: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -67,7 +76,32 @@ export class PhotoService {
       headers,
     });
   }
+  // Request a signed upload from the backend
+  getUploadSignature(folder: string): Observable<CloudinarySignature> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.get<CloudinarySignature>(
+      `https://felipe-fotos.vercel.app/api/admin/sign-upload?folder=${folder}`,
+      { headers },
+    );
+  }
 
+  // Save photo metadata to MongoDB after Cloudinary upload
+  savePhoto(data: {
+    url: string;
+    publicId: string;
+    category: string;
+    order: number;
+    photoTitle: string;
+  }): Observable<Photo> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.post<Photo>(`https://felipe-fotos.vercel.app/api/admin/photos`, data, {
+      headers,
+    });
+  }
   // Update photo metadata (admin only)
   updatePhoto(
     id: string,

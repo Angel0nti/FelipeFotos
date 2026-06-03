@@ -74,31 +74,68 @@ export class AdminUploadComponent implements OnInit {
     });
   }
 
-  onUpload(): void {
+  async onUpload(): Promise<void> {
     if (!this.selectedFile()) {
       this.error.set('Please select a photo');
       return;
     }
 
-    // Build formData to send file and metadata to the backend
-    const formData = new FormData();
-    formData.append('photo', this.selectedFile()!);
-    formData.append('category', this.category());
-    formData.append('photoTitle', this.photoTitle());
-    formData.append('order', this.order().toString());
-
     this.loading.set(true);
     this.error.set(null);
 
-    this.photoService.uploadPhoto(formData).subscribe({
-      next: () => {
-        this.success.set('Photo uploaded successfully');
-        this.loading.set(false);
-        this.loadPhotos();
-        this.clearMessages();
+    // Step 1 request a signature from the backend
+    this.photoService.getUploadSignature(this.category()).subscribe({
+      next: async (sig) => {
+        try {
+          // Step 2 Build the form data for Cloudinary direct upload
+          const formData = new FormData();
+          formData.append('file', this.selectedFile()!);
+          formData.append('timestamp', sig.timestamp.toString());
+          formData.append('signature', sig.signature);
+          formData.append('api_key', sig.api_key);
+          formData.append('folder', sig.folder);
+
+          // Step 3 - upload directly to Cloudinary (bypasses vercel limit)
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${sig.cloud_name}/image/upload`,
+            { method: 'POST', body: formData },
+          );
+
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error?.message || 'Upload failed');
+
+          // Step 4 Save only the URL and metadata to MongoDB via backend
+
+          // Step 4 — Save only the URL and metadata to MongoDB via backend
+          this.photoService
+            .savePhoto({
+              url: result.secure_url,
+              publicId: result.public_id,
+              category: this.category(),
+              order: this.order(),
+              photoTitle: this.photoTitle(),
+            })
+            .subscribe({
+              next: () => {
+                this.success.set('Photo uploaded successfully');
+                this.loading.set(false);
+                this.loadPhotos();
+                this.clearMessages();
+              },
+              error: () => {
+                this.error.set('Error saving photo to database');
+                this.loading.set(false);
+                this.clearMessages();
+              },
+            });
+        } catch (error) {
+          this.error.set('Error uploading to Cloudinary');
+          this.loading.set(false);
+          this.clearMessages();
+        }
       },
       error: () => {
-        this.error.set('Error uploading photo');
+        this.error.set('Error getting upload signature');
         this.loading.set(false);
         this.clearMessages();
       },

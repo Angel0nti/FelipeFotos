@@ -115,6 +115,10 @@
 }
 
 @media (max-width: 600px) {
+  .hero__subtitle {
+    letter-spacing: 0.1em;
+    font-size: 1rem;
+  }
   .hero__content {
     padding: var(--spacing-sm);
   }
