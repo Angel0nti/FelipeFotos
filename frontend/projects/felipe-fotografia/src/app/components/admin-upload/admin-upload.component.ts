@@ -88,7 +88,7 @@ export class AdminUploadComponent implements OnInit {
       next: async (sig) => {
         console.log('sig recibida:', sig);
         try {
-          // Step 2 Build the form data for Cloudinary direct upload
+          // Step 2 Build the form data for Cloudinary direct Upload
           const formData = new FormData();
           formData.append('file', this.selectedFile()!);
           formData.append('timestamp', sig.timestamp.toString());
