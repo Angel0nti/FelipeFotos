@@ -83,14 +83,16 @@ export class AdminUploadComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
+    // Compress image before uploading
+    const compressedFile = await this.compressImage(this.selectedFile()!);
+
     // Step 1 request a signature from the backend
     this.photoService.getUploadSignature(this.category()).subscribe({
       next: async (sig) => {
-        console.log('sig recibida:', sig);
         try {
           // Step 2 Build the form data for Cloudinary direct Upload
           const formData = new FormData();
-          formData.append('file', this.selectedFile()!);
+          formData.append('file', compressedFile);
           formData.append('timestamp', sig.timestamp.toString());
           formData.append('signature', sig.signature);
           formData.append('api_key', sig.api_key);
@@ -106,8 +108,6 @@ export class AdminUploadComponent implements OnInit {
           if (!response.ok) throw new Error(result.error?.message || 'Upload failed');
 
           // Step 4 Save only the URL and metadata to MongoDB via backend
-
-          // Step 4 — Save only the URL and metadata to MongoDB via backend
           this.photoService
             .savePhoto({
               url: result.secure_url,
@@ -260,5 +260,44 @@ export class AdminUploadComponent implements OnInit {
       this.success.set(null);
       this.error.set(null);
     }, 4000);
+  }
+
+  // Compress image before uploading to stay under Cloudinary's 10MB limit
+  private async compressImage(file: File): Promise<File> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target!.result as string;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+
+          // Max width of 3000px — enough for any screen
+          const maxWidth = 3000;
+          const scale = Math.min(1, maxWidth / img.width);
+
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+
+          const ctx = canvas.getContext('2d')!;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // Export as JPG at 85% quality
+          canvas.toBlob(
+            (blob) => {
+              const compressedFile = new File([blob!], file.name, {
+                type: 'image/jpeg',
+              });
+              resolve(compressedFile);
+            },
+            'image/jpeg',
+            0.85,
+          );
+        };
+      };
+    });
   }
 }
