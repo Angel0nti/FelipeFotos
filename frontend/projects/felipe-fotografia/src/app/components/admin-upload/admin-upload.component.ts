@@ -197,28 +197,71 @@ export class AdminUploadComponent implements OnInit {
       this.aboutFile.set(input.files[0]);
     }
   }
-  onUpdateAbout(): void {
+  async onUpdateAbout(): Promise<void> {
     this.loadingAbout.set(true);
+    this.error.set(null);
 
-    const formData = new FormData();
-    formData.append('title', this.aboutTitle());
-    formData.append('bio', this.aboutBio());
+    let photoUrl = undefined;
+    let publicId = undefined;
+
+    // If a new photo was selected, upload it directly to Cloudinary
     if (this.aboutFile()) {
-      formData.append('photo', this.aboutFile()!);
+      try {
+        const compressedFile = await this.compressImage(this.aboutFile()!);
+
+        // Step 1 — get signature for about folder
+        const sig = await new Promise<any>((resolve, reject) => {
+          this.photoService.getUploadSignature('about').subscribe({
+            next: resolve,
+            error: reject,
+          });
+        });
+
+        // Step 2 — upload directly to Cloudinary
+        const formData = new FormData();
+        formData.append('file', compressedFile);
+        formData.append('timestamp', sig.timestamp.toString());
+        formData.append('signature', sig.signature);
+        formData.append('api_key', sig.api_key);
+        formData.append('folder', sig.folder);
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${sig.cloud_name}/image/upload`,
+          { method: 'POST', body: formData },
+        );
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error?.message || 'Upload failed');
+
+        photoUrl = result.secure_url;
+        publicId = result.public_id;
+      } catch {
+        this.error.set('Error uploading about photo');
+        this.loadingAbout.set(false);
+        this.clearMessages();
+        return;
+      }
     }
 
-    this.photoService.updateAbout(formData).subscribe({
-      next: () => {
-        this.success.set('About section updated successfully');
-        this.loadingAbout.set(false);
-        this.clearMessages();
-      },
-      error: () => {
-        this.error.set('Error updating about section');
-        this.loadingAbout.set(false);
-        this.clearMessages();
-      },
-    });
+    // Step 3 — save to MongoDB
+    this.photoService
+      .updateAbout({
+        title: this.aboutTitle(),
+        bio: this.aboutBio(),
+        photoUrl,
+        publicId,
+      })
+      .subscribe({
+        next: () => {
+          this.success.set('About section updated successfully');
+          this.loadingAbout.set(false);
+          this.clearMessages();
+        },
+        error: () => {
+          this.error.set('Error updating about section');
+          this.loadingAbout.set(false);
+          this.clearMessages();
+        },
+      });
   }
 
   onHeroFileSelected(event: Event): void {
@@ -228,30 +271,64 @@ export class AdminUploadComponent implements OnInit {
     }
   }
 
-  onUpdateHero(): void {
+  async onUpdateHero(): Promise<void> {
     if (!this.heroFile()) {
       this.error.set('Please select a photo');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('photo', this.heroFile()!);
-
     this.loadingHero.set(true);
     this.error.set(null);
 
-    this.photoService.updateHero(formData).subscribe({
-      next: () => {
-        this.success.set('Hero image updated successfully');
-        this.loadingHero.set(false);
-        this.clearMessages();
-      },
-      error: () => {
-        this.error.set('Error updating hero image');
-        this.loadingHero.set(false);
-        this.clearMessages();
-      },
-    });
+    try {
+      const compressedFile = await this.compressImage(this.heroFile()!);
+
+      // Step 1 — get signature for hero folder
+      const sig = await new Promise<any>((resolve, reject) => {
+        this.photoService.getUploadSignature('hero').subscribe({
+          next: resolve,
+          error: reject,
+        });
+      });
+
+      // Step 2 — upload directly to Cloudinary
+      const formData = new FormData();
+      formData.append('file', compressedFile);
+      formData.append('timestamp', sig.timestamp.toString());
+      formData.append('signature', sig.signature);
+      formData.append('api_key', sig.api_key);
+      formData.append('folder', sig.folder);
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${sig.cloud_name}/image/upload`,
+        { method: 'POST', body: formData },
+      );
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error?.message || 'Upload failed');
+
+      // Step 3 — save URL to MongoDB
+      this.photoService
+        .updateHero({
+          photoUrl: result.secure_url,
+          publicId: result.public_id,
+        })
+        .subscribe({
+          next: () => {
+            this.success.set('Hero image updated successfully');
+            this.loadingHero.set(false);
+            this.clearMessages();
+          },
+          error: () => {
+            this.error.set('Error updating hero image');
+            this.loadingHero.set(false);
+            this.clearMessages();
+          },
+        });
+    } catch {
+      this.error.set('Error uploading hero image');
+      this.loadingHero.set(false);
+      this.clearMessages();
+    }
   }
 
   // Auto-clear success and error messages after 4 seconds

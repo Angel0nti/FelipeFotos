@@ -68,14 +68,6 @@ export class PhotoService {
     return this.http.get<Photo[]>(`${this.apiUrl}/${category}`);
   }
 
-  uploadPhoto(formData: FormData): Observable<Photo> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authService.getToken()}`,
-    });
-    return this.http.post<Photo>(`https://felipe-fotos.vercel.app/api/admin/photos`, formData, {
-      headers,
-    });
-  }
   // Request a signed upload from the backend
   getUploadSignature(folder: string): Observable<CloudinarySignature> {
     const headers = new HttpHeaders({
@@ -129,14 +121,17 @@ export class PhotoService {
     return this.http.get<About>(`${this.apiUrl.replace('/photos', '/about')}`);
   }
 
-  // Update the about section content (admin only)
-  updateAbout(formData: FormData): Observable<About> {
+  // Update the about section content (admin only) — receives Cloudinary URL
+  updateAbout(data: {
+    title: string;
+    bio: string;
+    photoUrl?: string;
+    publicId?: string;
+  }): Observable<About> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`,
     });
-    return this.http.put<About>(`${this.apiUrl.replace('/photos', '/about')}`, formData, {
-      headers,
-    });
+    return this.http.put<About>(`${this.apiUrl.replace('/photos', '/about')}`, data, { headers });
   }
 
   // Fetch the hero image
@@ -144,11 +139,11 @@ export class PhotoService {
     return this.http.get<Hero>(`${this.apiUrl.replace('/photos', '/hero')}`);
   }
 
-  // Update the hero image (admin only)
-  updateHero(formData: FormData): Observable<Hero> {
+  // Update the hero image (admin only) — receives Cloudinary URL
+  updateHero(data: { photoUrl: string; publicId: string }): Observable<Hero> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`,
     });
-    return this.http.put<Hero>(`${this.apiUrl.replace('/photos', '/hero')}`, formData, { headers });
+    return this.http.put<Hero>(`${this.apiUrl.replace('/photos', '/hero')}`, data, { headers });
   }
 }
