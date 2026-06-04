@@ -1,16 +1,12 @@
 // about.ts — Public and protected routes for the about section
 import { Router, Request, Response, IRouter } from 'express';
 import { v2 as cloudinary } from 'cloudinary';
-import multer from 'multer';
+
 import About from '../models/about.js';
 import authMiddleware, { AuthRequest } from '../middleware/auth.js';
 import { aboutRules, validate } from '../middleware/validators.js';
 
 const router: IRouter = Router();
-
-// Store uplodaded files in memory before sending to Cloudinary
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 // GET /api/about - returns the about section content
 router.get('/', async (_req: Request, res: Response): Promise<void> => {
@@ -27,49 +23,33 @@ router.get('/', async (_req: Request, res: Response): Promise<void> => {
   }
 });
 
-// PUT /api/about - update or create the about section (admin only)
+// PUT /api/about — update or create the about section (admin only)
 router.put(
   '/',
   authMiddleware,
-  upload.single('photo'),
   aboutRules,
   validate,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-      const { title, bio } = req.body;
+      const { title, bio, photoUrl, publicId } = req.body;
       const existing = await About.findOne();
 
-      let photoUrl = existing?.photoUrl;
-      let publicId = existing?.publicId;
+      // Use new photo if provided, otherwise keep existing
+      const finalPhotoUrl = photoUrl || existing?.photoUrl;
+      const finalPublicId = publicId || existing?.publicId;
 
-      // Only update photo if a new one was uploaded
-      if (req.file) {
-        if (existing?.publicId) {
-          await cloudinary.uploader.destroy(existing.publicId);
-        }
-
-        const uploadResult = await new Promise<{
-          secure_url: string;
-          public_id: string;
-        }>((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            { folder: 'felipe-fotografia/about' },
-            (error, result) => {
-              if (error || !result) return reject(error);
-              resolve(result);
-            },
-          );
-          stream.end(req.file!.buffer);
-        });
-
-        photoUrl = uploadResult.secure_url;
-        publicId = uploadResult.public_id;
+      // Delete old photo from Cloudinary if a new one was uploaded
+      if (
+        photoUrl &&
+        existing?.publicId &&
+        existing.publicId !== finalPublicId
+      ) {
+        await cloudinary.uploader.destroy(existing.publicId);
       }
 
-      // Update existing or create new — always preserve photo if not changed
       const about = await About.findOneAndUpdate(
         {},
-        { title, bio, photoUrl, publicId },
+        { title, bio, photoUrl: finalPhotoUrl, publicId: finalPublicId },
         { new: true, upsert: true },
       );
 
