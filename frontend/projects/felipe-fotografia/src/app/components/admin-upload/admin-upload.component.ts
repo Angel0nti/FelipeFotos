@@ -352,8 +352,8 @@ export class AdminUploadComponent implements OnInit {
         img.onload = () => {
           const canvas = document.createElement('canvas');
 
-          // Max width of 3000px — enough for any screen
-          const maxWidth = 3000;
+          // Max width of 4000px — enough for any screen
+          const maxWidth = 4000;
           const scale = Math.min(1, maxWidth / img.width);
 
           canvas.width = img.width * scale;
@@ -362,7 +362,7 @@ export class AdminUploadComponent implements OnInit {
           const ctx = canvas.getContext('2d')!;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-          // Export as JPG at 85% quality
+          // Export as JPG at 92% quality
           canvas.toBlob(
             (blob) => {
               const compressedFile = new File([blob!], file.name, {
@@ -371,7 +371,7 @@ export class AdminUploadComponent implements OnInit {
               resolve(compressedFile);
             },
             'image/jpeg',
-            0.85,
+            0.92,
           );
         };
       };
