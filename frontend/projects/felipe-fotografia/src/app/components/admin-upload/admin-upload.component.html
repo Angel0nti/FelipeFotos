@@ -6,7 +6,7 @@
     <p class="error">{{ error() }}</p>
   }
   @if (success()) {
-    <p class="sucess">{{ success() }}</p>
+    <p class="success">{{ success() }}</p>
   }
 
   <!-- Hero image editor -->
@@ -72,7 +72,6 @@
       type="text"
       placeholder="Photo Title (Optional)"
       [value]="photoTitle()"
-      ,
       (input)="photoTitle.set($any($event.target).value)"
     />
     <input

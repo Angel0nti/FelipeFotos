@@ -1,7 +1,6 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal, AfterViewInit } from '@angular/core';
 import { PhotoService, Photo } from '../../core/services/photo.service';
 import { AnimationService } from '../../core/services/animation.service';
-import { AfterViewInit } from '@angular/core';
 import { LightboxComponent } from '../lightbox/lightbox.component';
 
 @Component({
